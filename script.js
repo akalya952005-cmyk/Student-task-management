@@ -3,6 +3,53 @@
 const button = document.querySelector("button");
 const taskList = document.querySelector("ul");
 
+// Load saved tasks
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function displayTasks() {
+    taskList.innerHTML = "";
+
+    tasks.forEach(function (task, index) {
+
+        const li = document.createElement("li");
+
+        const taskText = document.createElement("span");
+        taskText.textContent = task.text;
+
+        if (task.completed) {
+            taskText.style.textDecoration = "line-through";
+        }
+
+        const completeButton = document.createElement("button");
+        completeButton.textContent = "Complete";
+
+        completeButton.addEventListener("click", function () {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+            displayTasks();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function () {
+            tasks.splice(index, 1);
+            saveTasks();
+            displayTasks();
+        });
+
+        li.appendChild(taskText);
+        li.appendChild(completeButton);
+        li.appendChild(deleteButton);
+
+        taskList.appendChild(li);
+    });
+}
+
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 button.addEventListener("click", function () {
 
     const task = input.value.trim();
@@ -12,37 +59,16 @@ button.addEventListener("click", function () {
         return;
     }
 
-    // Create task container
-    const li = document.createElement("li");
-
-    // Create task text
-    const taskText = document.createElement("span");
-    taskText.textContent = task;
-
-    // Create Complete button
-    const completeButton = document.createElement("button");
-    completeButton.textContent = "Complete";
-
-    completeButton.addEventListener("click", function () {
-        taskText.style.textDecoration = "line-through";
+    tasks.push({
+        text: task,
+        completed: false
     });
 
-    // Create Delete button
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
+    saveTasks();
+    displayTasks();
 
-    deleteButton.addEventListener("click", function () {
-        li.remove();
-    });
-
-    // Add everything to the task
-    li.appendChild(taskText);
-    li.appendChild(completeButton);
-    li.appendChild(deleteButton);
-
-    // Add task to the list
-    taskList.appendChild(li);
-
-    // Clear input
     input.value = "";
 });
+
+// Display saved tasks when page opens
+displayTasks();
