@@ -9,15 +9,19 @@
 
     <h1>Student Task Manager</h1>
 
-    <input type="text" placeholder="Enter your task">
-    <button>Add Task</button>
+    <input type="text" id="taskInput" placeholder="Enter your task">
+    <button id="addTaskButton">Add Task</button>
 
     <h2>My Tasks</h2>
 
-    <ul>
-        <li>Complete project report</li>
-        <li>Prepare for interview</li>
+    <p id="taskCounter">
+        Total: 0 | Completed: 0 | Pending: 0
+    </p>
+
+    <ul id="taskList">
     </ul>
-<script src="script.js"></script>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
