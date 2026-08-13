@@ -1,15 +1,34 @@
 
-    const input = document.querySelector("input");
-const button = document.querySelector("button");
-const taskList = document.querySelector("ul");
+   const input = document.querySelector("#taskInput");
+const button = document.querySelector("#addTaskButton");
+const taskList = document.querySelector("#taskList");
+const taskCounter = document.querySelector("#taskCounter");
 
 // Load saved tasks
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function updateCounter() {
+    const totalCount = tasks.length;
+
+    const completedCount = tasks.filter(function(task) {
+        return task.completed;
+    }).length;
+
+    const pendingCount = totalCount - completedCount;
+
+    taskCounter.textContent =
+        `Total: ${totalCount} | Completed: ${completedCount} | Pending: ${pendingCount}`;
+}
+
 function displayTasks() {
+
     taskList.innerHTML = "";
 
-    tasks.forEach(function (task, index) {
+    tasks.forEach(function(task, index) {
 
         const li = document.createElement("li");
 
@@ -20,20 +39,26 @@ function displayTasks() {
             taskText.style.textDecoration = "line-through";
         }
 
+        // Complete button
         const completeButton = document.createElement("button");
         completeButton.textContent = "Complete";
 
-        completeButton.addEventListener("click", function () {
+        completeButton.addEventListener("click", function() {
+
             tasks[index].completed = !tasks[index].completed;
+
             saveTasks();
             displayTasks();
         });
 
+        // Delete button
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
 
-        deleteButton.addEventListener("click", function () {
+        deleteButton.addEventListener("click", function() {
+
             tasks.splice(index, 1);
+
             saveTasks();
             displayTasks();
         });
@@ -44,13 +69,12 @@ function displayTasks() {
 
         taskList.appendChild(li);
     });
+
+    updateCounter();
 }
 
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-button.addEventListener("click", function () {
+// Add new task
+button.addEventListener("click", function() {
 
     const task = input.value.trim();
 
@@ -65,10 +89,11 @@ button.addEventListener("click", function () {
     });
 
     saveTasks();
+
     displayTasks();
 
     input.value = "";
 });
 
-// Display saved tasks when page opens
+// Show saved tasks when page opens
 displayTasks();
