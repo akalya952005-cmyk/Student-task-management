@@ -1,4 +1,5 @@
-body {
+
+  body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
     text-align: center;
@@ -12,16 +13,24 @@ h1 {
 input {
     padding: 10px;
     width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 10px 15px;
     margin-left: 5px;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
 }
 
 h2 {
     color: #555;
+}
+
+#taskCounter {
+    font-weight: bold;
 }
 
 ul {
@@ -33,5 +42,10 @@ li {
     background-color: white;
     margin: 10px auto;
     padding: 12px;
-    width: 350px;
+    width: 400px;
+    border-radius: 5px;
+}
+
+li button {
+    margin-left: 10px;
 }
